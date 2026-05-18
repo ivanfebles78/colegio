@@ -244,17 +244,26 @@ function HeroStack() {
 
 function UniformPreview() {
   const items = [
-    { name: "Pantalón chándal", price: "28,90 €", tone: "from-emerald-900 to-emerald-700" },
-    { name: "Camisa de vestir", price: "23,90 €", tone: "from-stone-200 to-stone-50 text-stone-700" },
-    { name: "Suéter cuello pico", price: "34,90 €", tone: "from-emerald-800 to-emerald-600" },
-    { name: "Zapatos colegiales", price: "39,90 €", tone: "from-zinc-900 to-zinc-700" },
+    { name: "Chándal", price: "58,90 €", src: "/uniform/chandal.png" },
+    { name: "Suéter cuello de pico", price: "34,90 €", src: "/uniform/sueter.png" },
+    { name: "Falda de vestir", price: "31,90 €", src: "/uniform/falda.png" },
+    { name: "Zapatos colegiales", price: "39,90 €", src: "/uniform/zapato_nino.jpg" },
   ];
   return (
     <div className="grid grid-cols-2 gap-4">
       {items.map((it, i) => (
-        <div key={i} className="card-elevated p-4 hover:-translate-y-0.5 transition-transform">
-          <div className={`aspect-square rounded-lg bg-gradient-to-br ${it.tone} mb-3 flex items-center justify-center`}>
-            <Shirt className="h-12 w-12 opacity-50" strokeWidth={1} />
+        <div
+          key={i}
+          className="card-elevated p-4 hover:-translate-y-0.5 transition-transform"
+        >
+          <div className="relative aspect-square rounded-lg bg-secondary/40 overflow-hidden mb-3">
+            <Image
+              src={it.src}
+              alt={it.name}
+              fill
+              sizes="(max-width: 1024px) 50vw, 220px"
+              className="object-contain p-3"
+            />
           </div>
           <div className="text-sm font-medium leading-snug">{it.name}</div>
           <div className="text-sm text-primary font-semibold mt-1">{it.price}</div>
