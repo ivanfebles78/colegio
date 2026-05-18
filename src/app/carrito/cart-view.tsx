@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, BookOpen, Shirt } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, BookOpen, Shirt } from "lucide-react";
 import { useCart } from "@/lib/cart-store";
 import { Button } from "@/components/ui/button";
 import { formatEuro } from "@/lib/utils";
@@ -50,11 +51,24 @@ export function CartView() {
       <div className="card-elevated divide-y divide-border">
         {lines.map((l) => (
           <div key={l.key} className="p-5 flex gap-4 items-start">
-            <div className="h-20 w-16 rounded-md bg-gradient-to-br from-secondary to-muted flex-shrink-0 flex items-center justify-center">
-              {l.kind === "BOOK" ? (
-                <BookOpen className="h-6 w-6 text-muted-foreground/60" strokeWidth={1.2} />
+            <div className="relative h-20 w-16 rounded-md bg-secondary/40 flex-shrink-0 overflow-hidden">
+              {l.imageUrl ? (
+                <Image
+                  src={l.imageUrl}
+                  alt={l.name}
+                  fill
+                  sizes="64px"
+                  className="object-contain p-1"
+                  unoptimized={l.imageUrl.startsWith("http")}
+                />
               ) : (
-                <Shirt className="h-6 w-6 text-muted-foreground/60" strokeWidth={1.2} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {l.kind === "BOOK" ? (
+                    <BookOpen className="h-6 w-6 text-muted-foreground/60" strokeWidth={1.2} />
+                  ) : (
+                    <Shirt className="h-6 w-6 text-muted-foreground/60" strokeWidth={1.2} />
+                  )}
+                </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
