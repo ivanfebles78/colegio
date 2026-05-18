@@ -350,10 +350,17 @@ export const booksByCourseSlug: Record<string, SeedBook[]> = {
  *   4) Si todo falla → null y la tarjeta usa placeholder con icono.
  */
 const localBookByIsbn: Record<string, string> = {
-  // 1º Primaria
-  "9788468067933": "/books/primeras_lecturas.jpg", // 1.3 Pri Lecturas 1x8 ED22
+  // 1º Primaria — Lengua
+  "9788468071596": "/books/lengua.png",            // Lengua Paso Cuaderno CM ED22
+  "9788468071282": "/books/lengua_cuaderno.jpg",   // 1.1 Cuaderno Lengua Lecto
+  "9788468071206": "/books/lengua_cuaderno.jpg",   // 1.2 Cuaderno Lengua Lecto
+  "9788468067933": "/books/primeras_lecturas.jpg", // 1.3 Lecturas 1x8 ED22
+  // 1º Primaria — Matemáticas, Conocimiento del Medio
   "9788419718075": "/books/pack_juegos.png",       // Pack EMAT + Juegos Lemon
   "9788414122341": "/books/cono.png",              // Conocimiento del Medio 1º
+  // 1º Primaria — Inglés
+  "9788466826228": "/books/student_book.png",      // Amazing Journey 1 Student's Pack
+  "9788466825801": "/books/ingles.png",            // Amazing Journey 1 Activity Pack
 };
 
 export function bookCoverUrl(
