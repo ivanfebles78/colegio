@@ -135,8 +135,9 @@ NEXT_PUBLIC_SCHOOL_LOCATION="Madrid"
 NEXT_PUBLIC_SCHOOL_DOMAIN="colegio-ejemplo.es"
 NEXT_PUBLIC_SCHOOL_PHONE="91 000 00 00"
 NEXT_PUBLIC_SCHOOL_EMAIL="info@colegio-ejemplo.es"
-NEXT_PUBLIC_SCHOOL_PRIMARY_HSL="220 50% 20%"   # azul corporativo
+NEXT_PUBLIC_SCHOOL_PRIMARY_HSL="220 50% 20%"   # azul corporativo (HSL: hue saturation lightness)
 NEXT_PUBLIC_SCHOOL_ACCENT_HSL="35 80% 55%"     # dorado/naranja
+# IMPORTANTE: los colores van en formato HSL, no hex. Conversor: oklch.com
 ```
 
 Los colores se aplican al instante. Para el catálogo, el admin puede:
