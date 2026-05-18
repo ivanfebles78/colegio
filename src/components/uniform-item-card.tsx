@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Shirt } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AddToCartButton } from "./add-to-cart-button";
@@ -45,14 +46,28 @@ export function UniformItemCard({ item }: { item: UniformItemData }) {
 
   return (
     <article className="card-elevated overflow-hidden flex flex-col">
-      <div className={cn("relative aspect-[4/3] bg-gradient-to-br flex items-center justify-center", tone)}>
-        <Shirt className="h-20 w-20 opacity-40" strokeWidth={1} />
-        <div className="absolute left-3 top-3">
-          <Badge variant="outline" className="bg-card/90">{prettySection(item.section)}</Badge>
+      <div className="relative aspect-[4/3] overflow-hidden bg-secondary/40">
+        {item.imageUrl ? (
+          <Image
+            src={item.imageUrl}
+            alt={item.name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-contain p-4"
+          />
+        ) : (
+          <div className={cn("absolute inset-0 bg-gradient-to-br flex items-center justify-center", tone)}>
+            <Shirt className="h-20 w-20 opacity-40" strokeWidth={1} />
+          </div>
+        )}
+        <div className="absolute left-3 top-3 z-10">
+          <Badge variant="outline" className="bg-card/95 backdrop-blur">
+            {prettySection(item.section)}
+          </Badge>
         </div>
         {item.gender !== "UNISEX" && (
-          <div className="absolute right-3 top-3">
-            <Badge variant="outline" className="bg-card/90">
+          <div className="absolute right-3 top-3 z-10">
+            <Badge variant="outline" className="bg-card/95 backdrop-blur">
               {item.gender === "NINO" ? "Niño" : "Niña"}
             </Badge>
           </div>

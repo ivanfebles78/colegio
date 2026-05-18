@@ -94,7 +94,7 @@ async function main() {
           priceCents: b.priceCents,
           stock: b.stock,
           exclusiveAtSchool: b.exclusiveAtSchool,
-          coverUrl: bookCoverUrl(b.isbn),
+          coverUrl: bookCoverUrl(b.isbn, b.title),
           notes: b.notes,
           courseId: course.id,
           categoryId: category.id,

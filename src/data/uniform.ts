@@ -6,10 +6,8 @@
  *     - PRENDA (UniformItem): nombre, descripción, género (UNISEX | NIÑO | NIÑA), precio base
  *       - VARIANTES (UniformVariant): cada talla con su stock independiente
  *
- * Las tallas dependen del tipo de prenda:
- *   - Infantil/Primaria por edad: 2, 3, 4, 6, 8, 10, 12, 14, 16 años
- *   - Adulto: XS, S, M, L, XL
- *   - Calzado: 22-46
+ * Las imágenes están en `public/uniform/*.{png,jpg}` y se sirven como
+ * estáticos por Next.js (sin configuración adicional).
  */
 
 export type GenderKey = "UNISEX" | "NINO" | "NINA";
@@ -23,7 +21,7 @@ export type UniformSectionKey =
 export interface SeedUniformVariant {
   size: string;
   stock: number;
-  priceCents?: number; // si se omite, hereda basePriceCents
+  priceCents?: number;
 }
 
 export interface SeedUniformItem {
@@ -57,27 +55,18 @@ const o = () => ++_order;
 
 export const uniformCatalog: SeedUniformItem[] = [
   // ===========================================================================
-  //  DEPORTE — chándal completo + complementos
+  //  DEPORTE
   // ===========================================================================
   {
-    slug: "pantalon-chandal",
-    name: "Pantalón de chándal",
-    description: "Pantalón de chándal oficial con escudo del colegio bordado en la pernera izquierda. Tejido transpirable y resistente. Cintura elástica con cordón.",
+    slug: "chandal",
+    name: "Chándal completo",
+    description: "Conjunto oficial de chándal: chaqueta con cremallera completa y pantalón a juego. Escudo del colegio bordado. Se vende como conjunto, no por piezas separadas.",
     section: "DEPORTE",
     gender: "UNISEX",
-    basePriceCents: 2890,
+    basePriceCents: 5890,
+    imageUrl: "/uniform/chandal.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult), ["XS"], ["16"]),
-  },
-  {
-    slug: "chaqueta-chandal",
-    name: "Chaqueta de chándal",
-    description: "Chaqueta oficial a juego con el pantalón. Cremallera completa, dos bolsillos laterales con cremallera. Logotipo bordado en el pecho izquierdo.",
-    section: "DEPORTE",
-    gender: "UNISEX",
-    basePriceCents: 3490,
-    order: o(),
-    variants: variants(sizesKids.concat(sizesAdult), ["S"], []),
   },
   {
     slug: "camiseta-blanca-deporte",
@@ -86,6 +75,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "DEPORTE",
     gender: "UNISEX",
     basePriceCents: 1290,
+    imageUrl: "/uniform/camiseta_deporte.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult)),
   },
@@ -96,6 +86,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "DEPORTE",
     gender: "UNISEX",
     basePriceCents: 1490,
+    imageUrl: "/uniform/pantalon_corto.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult), [], ["2"]),
   },
@@ -116,12 +107,13 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "CALZADO",
     gender: "UNISEX",
     basePriceCents: 3290,
+    imageUrl: "/uniform/tenis.jpg",
     order: o(),
     variants: variants(sizesShoes, ["24", "42"], ["41"]),
   },
 
   // ===========================================================================
-  //  VESTIR — uniforme institucional
+  //  VESTIR
   // ===========================================================================
   {
     slug: "polo-vestir-blanco",
@@ -130,18 +122,9 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "VESTIR",
     gender: "UNISEX",
     basePriceCents: 1690,
+    imageUrl: "/uniform/polo.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult)),
-  },
-  {
-    slug: "camisa-vestir",
-    name: "Camisa blanca de vestir",
-    description: "Camisa de manga larga, cuello clásico. Para uniforme de gala y eventos institucionales.",
-    section: "VESTIR",
-    gender: "UNISEX",
-    basePriceCents: 2390,
-    order: o(),
-    variants: variants(sizesKids.concat(sizesAdult), ["XS"], []),
   },
   {
     slug: "pantalon-vestir",
@@ -150,6 +133,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "VESTIR",
     gender: "NINO",
     basePriceCents: 2890,
+    imageUrl: "/uniform/pantalon_largo.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult), ["L"], []),
   },
@@ -160,6 +144,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "VESTIR",
     gender: "NINA",
     basePriceCents: 3190,
+    imageUrl: "/uniform/falda.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult), ["14"], ["XS"]),
   },
@@ -170,6 +155,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "VESTIR",
     gender: "UNISEX",
     basePriceCents: 3490,
+    imageUrl: "/uniform/sueter.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult)),
   },
@@ -180,6 +166,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "VESTIR",
     gender: "NINA",
     basePriceCents: 890,
+    imageUrl: "/uniform/medias.png",
     order: o(),
     variants: variants(["XS", "S", "M", "L"]),
   },
@@ -195,31 +182,33 @@ export const uniformCatalog: SeedUniformItem[] = [
   },
 
   // ===========================================================================
-  //  CALZADO
+  //  CALZADO institucional (por género)
   // ===========================================================================
   {
-    slug: "zapatos-colegiales-negros",
-    name: "Zapatos colegiales negros",
-    description: "Zapato clásico de piel sintética con velcro hasta talla 32. Cordón a partir de talla 33.",
+    slug: "zapatos-colegiales-nino",
+    name: "Zapatos colegiales (niño)",
+    description: "Zapato clásico oficial para niño. Piel sintética. Velcro hasta talla 32, cordón a partir de talla 33.",
     section: "CALZADO",
-    gender: "UNISEX",
+    gender: "NINO",
     basePriceCents: 3990,
+    imageUrl: "/uniform/zapato_nino.jpg",
     order: o(),
     variants: variants(sizesShoes, ["38"], ["24"]),
   },
   {
-    slug: "zapatos-colegiales-azul-marino",
-    name: "Zapatos colegiales azul marino",
-    description: "Alternativa al zapato negro. Mismo modelo en azul marino oficial.",
+    slug: "zapatos-colegiales-nina",
+    name: "Zapatos colegiales (niña)",
+    description: "Zapato clásico oficial para niña. Piel sintética con detalle de hebilla. Velcro hasta talla 32, cordón a partir de talla 33.",
     section: "CALZADO",
-    gender: "UNISEX",
+    gender: "NINA",
     basePriceCents: 3990,
+    imageUrl: "/uniform/zapato_nina.png",
     order: o(),
     variants: variants(sizesShoes, ["32", "34"], []),
   },
 
   // ===========================================================================
-  //  ABRIGO
+  //  ABRIGO (sin imágenes por ahora — fallback a icono)
   // ===========================================================================
   {
     slug: "abrigo-grueso",
@@ -253,7 +242,7 @@ export const uniformCatalog: SeedUniformItem[] = [
   },
 
   // ===========================================================================
-  //  COMPLEMENTOS
+  //  COMPLEMENTOS (sin imágenes — fallback a icono)
   // ===========================================================================
   {
     slug: "mochila",

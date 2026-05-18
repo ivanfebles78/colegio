@@ -47,3 +47,7 @@ prisma/*.db
 .vscode
 *.swp
 *.swo
+
+# Source assets (las imágenes "oficiales" viven en public/, esta carpeta es
+# solo el sitio de trabajo donde el usuario suelta originales)
+/images/

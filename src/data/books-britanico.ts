@@ -341,10 +341,18 @@ export const booksByCourseSlug: Record<string, SeedBook[]> = {
 };
 
 /**
- * URL de portada generada desde el ISBN usando OpenLibrary.
- * Si la imagen no existe, OpenLibrary devuelve 1x1; el componente UI lo
- * detecta y usa un placeholder genérico de respaldo.
+ * URL de portada: primero busca una imagen LOCAL en `public/books/` para los
+ * libros que ya tenemos digitalizados (los proyectos de Infantil, Ludiletras,
+ * etc.). Si no hay imagen local, intenta OpenLibrary por ISBN. Si tampoco,
+ * devuelve null y la tarjeta usa el placeholder con icono.
  */
-export function bookCoverUrl(isbn: string | null | undefined): string | null {
+export function bookCoverUrl(
+  isbn: string | null | undefined,
+  title?: string,
+): string | null {
+  const t = (title ?? "").toLowerCase();
+  if (t.includes("ludiletras")) return "/books/ludiletras.png";
+  if (t.includes("alrededor del mundo")) return "/books/alrededordelmundo.jpg";
+  if (t.includes("emergencia") && t.includes("112")) return "/books/emergencia.png";
   return cover(isbn ?? null);
 }
