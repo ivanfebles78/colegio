@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Sistema (shadcn) */
+    --background: 40 30% 98%;
+    --foreground: 158 25% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 158 25% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 158 25% 12%;
+    --primary: 158 36% 16%;
+    --primary-foreground: 40 30% 98%;
+    --secondary: 40 25% 94%;
+    --secondary-foreground: 158 30% 18%;
+    --muted: 40 30% 95%;
+    --muted-foreground: 158 12% 38%;
+    --accent: 39 42% 60%;
+    --accent-foreground: 158 30% 14%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 40 30% 98%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 158 36% 25%;
+    --radius: 0.75rem;
+
+    /* Brand (colegio) */
+    --brand: 158 36% 16%;
+    --brand-foreground: 40 30% 98%;
+    --brand-accent: 39 42% 60%;
+    --brand-muted: 40 30% 95%;
+
+    --font-sans: "Inter", "Helvetica Neue", system-ui, sans-serif;
+    --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .container-tight {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .heading-display {
+    font-family: var(--font-serif);
+    @apply font-medium tracking-tight;
+    letter-spacing: -0.02em;
+  }
+
+  .card-elevated {
+    @apply rounded-2xl border border-border bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.12)];
+  }
+
+  .surface-brand {
+    background: linear-gradient(
+      180deg,
+      hsl(var(--brand) / 1) 0%,
+      hsl(var(--brand) / 0.94) 100%
+    );
+    color: hsl(var(--brand-foreground));
+  }
+
+  .surface-paper {
+    background:
+      radial-gradient(
+        circle at 0% 0%,
+        hsl(var(--accent) / 0.08) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 100% 100%,
+        hsl(var(--brand) / 0.05) 0%,
+        transparent 50%
+      ),
+      hsl(var(--background));
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-foreground/80;
+  }
+
+  .pill-accent {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-accent/15 px-3 py-1 text-xs font-semibold text-accent-foreground;
+  }
+}
+
+/* Scroll suave + scroll-padding para anchors bajo header sticky */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+/* Esconde el outline default cuando se navega con ratón pero lo mantiene
+   con teclado (accesibilidad) */
+:focus:not(:focus-visible) {
+  outline: none;
+}

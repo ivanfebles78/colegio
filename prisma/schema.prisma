@@ -1,0 +1,229 @@
+// =============================================================================
+//  Tienda online de libros y uniformes del colegio
+//  -- Prisma + PostgreSQL --
+//  Todos los precios se almacenan en CÉNTIMOS (Int) para evitar errores con
+//  decimales en JavaScript. Conversión a euros: price / 100.
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+//  Estructura académica
+// -----------------------------------------------------------------------------
+
+enum EducationLevel {
+  INFANTIL
+  PRIMARIA
+  ESO
+  BACHILLERATO
+}
+
+enum BachilleratoBranch {
+  CIENCIAS_Y_TECNOLOGIA
+  HUMANIDADES_Y_CCSS
+}
+
+model Course {
+  id         String              @id @default(cuid())
+  slug       String              @unique
+  level      EducationLevel
+  year       Int                 // 1..6 segun nivel
+  branch     BachilleratoBranch? // solo para Bachillerato
+  shortName  String              // p.ej. "1º Infantil", "2º Bach. CyT"
+  fullName   String              // p.ej. "Primero de Educación Infantil"
+  displayAge String?             // p.ej. "3 años"
+  order      Int                 // orden visual en home
+  books      Book[]
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+//  Catálogo de LIBROS
+// -----------------------------------------------------------------------------
+
+model BookCategory {
+  id    String @id @default(cuid())
+  name  String @unique  // "LENGUA CASTELLANA Y LITERATURA", "MATEMÁTICAS", ...
+  order Int    @default(0)
+  books Book[]
+}
+
+model Book {
+  id                String       @id @default(cuid())
+  title             String
+  publisher         String
+  isbn              String?      // algunos libros (licencias digitales) no tienen ISBN
+  priceCents        Int
+  stock             Int          @default(0)
+  exclusiveAtSchool Boolean      @default(false) // "venta exclusiva en el colegio a partir de septiembre"
+  coverUrl          String?
+  notes             String?      // notas adicionales del PDF
+  courseId          String
+  course            Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  categoryId        String
+  category          BookCategory @relation(fields: [categoryId], references: [id])
+  orderItems        OrderItem[]
+  reservations      StockReservation[]
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([courseId])
+  @@index([categoryId])
+}
+
+// -----------------------------------------------------------------------------
+//  Catálogo de UNIFORME
+//  Un UniformItem (ej. "Pantalón de chándal") tiene varias UniformVariant
+//  (cada talla con su stock independiente).
+// -----------------------------------------------------------------------------
+
+enum Gender {
+  UNISEX
+  NINO
+  NINA
+}
+
+enum UniformSection {
+  DEPORTE
+  VESTIR
+  CALZADO
+  ABRIGO
+  COMPLEMENTOS
+}
+
+model UniformItem {
+  id          String           @id @default(cuid())
+  name        String
+  description String?
+  section     UniformSection
+  gender      Gender           @default(UNISEX)
+  basePriceCents Int
+  imageUrl    String?
+  order       Int              @default(0)
+  variants    UniformVariant[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model UniformVariant {
+  id          String      @id @default(cuid())
+  itemId      String
+  item        UniformItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  size        String      // "4 años", "S", "M", "38", "39"...
+  sku         String      @unique
+  stock       Int         @default(0)
+  priceCents  Int?        // si se omite, se usa basePriceCents del item
+  orderItems  OrderItem[]
+  reservations StockReservation[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([itemId])
+}
+
+// -----------------------------------------------------------------------------
+//  Pedidos (orders)
+// -----------------------------------------------------------------------------
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  READY_FOR_PICKUP
+  PICKED_UP
+  CANCELLED
+}
+
+model Order {
+  id              String       @id @default(cuid())
+  orderNumber     String       @unique // legible para humanos: BR-2026-0001
+  parentName      String
+  childName       String
+  childCourseId   String?
+  contactEmail    String
+  contactPhone    String?
+  status          OrderStatus  @default(PENDING_PAYMENT)
+  subtotalCents   Int
+  totalCents      Int
+  stripeSessionId String?      @unique
+  stripePaymentId String?
+  pickupNotes     String?      // notas internas para secretaría
+  customerNotes   String?      // mensaje del cliente
+  items           OrderItem[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  paidAt          DateTime?
+}
+
+enum OrderItemKind {
+  BOOK
+  UNIFORM
+}
+
+model OrderItem {
+  id             String          @id @default(cuid())
+  orderId        String
+  order          Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  kind           OrderItemKind
+  bookId         String?
+  book           Book?           @relation(fields: [bookId], references: [id])
+  variantId      String?
+  variant        UniformVariant? @relation(fields: [variantId], references: [id])
+  nameSnapshot   String          // título / nombre prenda+talla en el momento de la compra
+  detailSnapshot String?         // ISBN, talla, etc.
+  unitPriceCents Int
+  quantity       Int             @default(1)
+
+  @@index([orderId])
+}
+
+// -----------------------------------------------------------------------------
+//  Reservas de productos agotados (waitlist)
+// -----------------------------------------------------------------------------
+
+enum ReservationKind {
+  BOOK
+  UNIFORM
+  REQUEST // solicitud genérica de un producto que no existe en catálogo
+}
+
+enum ReservationStatus {
+  WAITING
+  NOTIFIED
+  CONVERTED  // se convirtió en pedido
+  CANCELLED
+}
+
+model StockReservation {
+  id              String            @id @default(cuid())
+  kind            ReservationKind
+  bookId          String?
+  book            Book?             @relation(fields: [bookId], references: [id])
+  variantId       String?
+  variant         UniformVariant?   @relation(fields: [variantId], references: [id])
+  requestNotes    String?           // descripción si es REQUEST
+  parentName      String
+  childName       String
+  childCourseId   String?
+  contactEmail    String
+  contactPhone    String?
+  notifyEmail     Boolean           @default(true)
+  notifySms       Boolean           @default(false)
+  notifyWhatsapp  Boolean           @default(false)
+  status          ReservationStatus @default(WAITING)
+  notifiedAt      DateTime?
+  notifiedChannel String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([bookId])
+  @@index([variantId])
+  @@index([status])
+}

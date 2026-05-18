@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: britanico-shop-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: shop
+      POSTGRES_PASSWORD: shop
+      POSTGRES_DB: britanico_shop
+    ports:
+      - "5432:5432"
+    volumes:
+      - britanico_shop_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shop -d britanico_shop"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  britanico_shop_data:
