@@ -97,6 +97,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "DEPORTE",
     gender: "UNISEX",
     basePriceCents: 690,
+    imageUrl: "/uniform/calcetines_deporte.png",
     order: o(),
     variants: variants(["S", "M", "L"]),
   },
@@ -177,6 +178,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "VESTIR",
     gender: "UNISEX",
     basePriceCents: 690,
+    imageUrl: "/uniform/calcetines_azules.png",
     order: o(),
     variants: variants(["S", "M", "L"]),
   },
@@ -208,7 +210,7 @@ export const uniformCatalog: SeedUniformItem[] = [
   },
 
   // ===========================================================================
-  //  ABRIGO (sin imágenes por ahora — fallback a icono)
+  //  ABRIGO
   // ===========================================================================
   {
     slug: "abrigo-grueso",
@@ -217,18 +219,9 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "ABRIGO",
     gender: "UNISEX",
     basePriceCents: 6490,
+    imageUrl: "/uniform/abrigo.png",
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult), ["12"], ["2", "XL"]),
-  },
-  {
-    slug: "chubasquero",
-    name: "Chubasquero impermeable",
-    description: "Chubasquero verde con escudo bordado. Costuras termoselladas. Para días de lluvia.",
-    section: "ABRIGO",
-    gender: "UNISEX",
-    basePriceCents: 2890,
-    order: o(),
-    variants: variants(sizesKids.concat(sizesAdult)),
   },
   {
     slug: "chaleco-acolchado",
@@ -242,42 +235,8 @@ export const uniformCatalog: SeedUniformItem[] = [
   },
 
   // ===========================================================================
-  //  COMPLEMENTOS (sin imágenes — fallback a icono)
+  //  Infantil
   // ===========================================================================
-  {
-    slug: "mochila",
-    name: "Mochila oficial del colegio",
-    description: "Mochila de espalda acolchada con escudo bordado. Compartimento para portátil y bolsillo interior con cremallera.",
-    section: "COMPLEMENTOS",
-    gender: "UNISEX",
-    basePriceCents: 4290,
-    order: o(),
-    variants: [
-      { size: "Pequeña (Infantil)", stock: 7 },
-      { size: "Mediana (Primaria)", stock: 12 },
-      { size: "Grande (Secundaria/Bach)", stock: 9 },
-    ],
-  },
-  {
-    slug: "bolsa-deporte",
-    name: "Bolsa de deporte",
-    description: "Bolsa con compartimento separado para zapatillas. Tela impermeable.",
-    section: "COMPLEMENTOS",
-    gender: "UNISEX",
-    basePriceCents: 1990,
-    order: o(),
-    variants: [{ size: "Única", stock: 14 }],
-  },
-  {
-    slug: "estuche-tres-pisos",
-    name: "Estuche de tres pisos",
-    description: "Estuche con escudo bordado, ideal para Primaria y ESO. Tres compartimentos independientes.",
-    section: "COMPLEMENTOS",
-    gender: "UNISEX",
-    basePriceCents: 1290,
-    order: o(),
-    variants: [{ size: "Única", stock: 0 }], // agotado a propósito para demo
-  },
   {
     slug: "bata-infantil",
     name: "Bata escolar de Infantil",
@@ -285,6 +244,7 @@ export const uniformCatalog: SeedUniformItem[] = [
     section: "VESTIR",
     gender: "UNISEX",
     basePriceCents: 1990,
+    imageUrl: "/uniform/babi.png",
     order: o(),
     variants: [
       { size: "3 años", stock: 8 },

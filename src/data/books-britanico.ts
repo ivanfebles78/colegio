@@ -117,7 +117,6 @@ export const booksByCourseSlug: Record<string, SeedBook[]> = {
     { title: "Conocimiento del Medio 1º — Proyecto Construyendo Mundos", publisher: "SANTILLANA", isbn: "9788414122341", category: "CONOCIMIENTO DEL MEDIO", priceCents: P.textoPrincipal, stock: 9, exclusiveAtSchool: false },
     { title: "Amazing Journey 1 — Student's Pack", publisher: "RICHMOND", isbn: "9788466826228", category: "INGLÉS", priceCents: P.ingleStudentsPack, stock: 10, exclusiveAtSchool: false },
     { title: "Amazing Journey 1 — Activity Pack", publisher: "RICHMOND", isbn: "9788466825801", category: "INGLÉS", priceCents: P.ingleActivityPack, stock: 9, exclusiveAtSchool: false },
-    { title: "Licencia Digital de Inglés", publisher: "MILTON", isbn: null, category: "INGLÉS", priceCents: P.licenciaDigital, stock: 0, exclusiveAtSchool: true, notes: "Venta exclusiva en el colegio a partir de septiembre" },
     { title: "Les Petits Loustics 1 — Méthode de Français", publisher: "HACHETTE", isbn: "9782016252765", category: "FRANCÉS", priceCents: P.frances, stock: 8, exclusiveAtSchool: false },
     { title: "Les Petits Loustics 1 — Cahier d'activités", publisher: "HACHETTE", isbn: "9782016252772", category: "FRANCÉS", priceCents: P.cuadernillo, stock: 8, exclusiveAtSchool: false },
     { title: "1º Pri Cuaderno Music ED22", publisher: "SANTILLANA", isbn: "9788468061214", category: "MÚSICA", priceCents: P.musica, stock: 12, exclusiveAtSchool: false },
@@ -341,18 +340,32 @@ export const booksByCourseSlug: Record<string, SeedBook[]> = {
 };
 
 /**
- * URL de portada: primero busca una imagen LOCAL en `public/books/` para los
- * libros que ya tenemos digitalizados (los proyectos de Infantil, Ludiletras,
- * etc.). Si no hay imagen local, intenta OpenLibrary por ISBN. Si tampoco,
- * devuelve null y la tarjeta usa el placeholder con icono.
+ * URL de portada de un libro.
+ *
+ * Estrategia en cascada:
+ *   1) Mapeo directo por ISBN (preciso, evita ambigüedad entre libros
+ *      con títulos parecidos como los tres cuadernos 1.1/1.2/1.3).
+ *   2) Mapeo por título (para series sin ISBN únicos: Ludiletras, etc.)
+ *   3) Fallback a OpenLibrary por ISBN.
+ *   4) Si todo falla → null y la tarjeta usa placeholder con icono.
  */
+const localBookByIsbn: Record<string, string> = {
+  // 1º Primaria
+  "9788468067933": "/books/primeras_lecturas.jpg", // 1.3 Pri Lecturas 1x8 ED22
+  "9788419718075": "/books/pack_juegos.png",       // Pack EMAT + Juegos Lemon
+  "9788414122341": "/books/cono.png",              // Conocimiento del Medio 1º
+};
+
 export function bookCoverUrl(
   isbn: string | null | undefined,
   title?: string,
 ): string | null {
+  if (isbn && localBookByIsbn[isbn]) return localBookByIsbn[isbn];
+
   const t = (title ?? "").toLowerCase();
   if (t.includes("ludiletras")) return "/books/ludiletras.png";
   if (t.includes("alrededor del mundo")) return "/books/alrededordelmundo.jpg";
   if (t.includes("emergencia") && t.includes("112")) return "/books/emergencia.png";
+
   return cover(isbn ?? null);
 }

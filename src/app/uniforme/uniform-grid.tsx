@@ -5,7 +5,7 @@ import { UniformItemCard, type UniformItemData } from "@/components/uniform-item
 import { cn } from "@/lib/utils";
 
 type GenderFilter = "ALL" | "UNISEX" | "NINO" | "NINA";
-type SectionFilter = "ALL" | "DEPORTE" | "VESTIR" | "CALZADO" | "ABRIGO" | "COMPLEMENTOS";
+type SectionFilter = "ALL" | "DEPORTE" | "VESTIR" | "CALZADO" | "ABRIGO";
 
 const sections: { key: SectionFilter; label: string }[] = [
   { key: "ALL", label: "Todo el uniforme" },
@@ -13,7 +13,6 @@ const sections: { key: SectionFilter; label: string }[] = [
   { key: "VESTIR", label: "Vestir" },
   { key: "CALZADO", label: "Calzado" },
   { key: "ABRIGO", label: "Abrigo" },
-  { key: "COMPLEMENTOS", label: "Complementos" },
 ];
 
 const genders: { key: GenderFilter; label: string }[] = [
