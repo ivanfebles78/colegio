@@ -361,6 +361,8 @@ const localBookByIsbn: Record<string, string> = {
   // 1º Primaria — Inglés
   "9788466826228": "/books/student_book.png",      // Amazing Journey 1 Student's Pack
   "9788466825801": "/books/ingles.png",            // Amazing Journey 1 Activity Pack
+  // 1º Primaria — Música
+  "9788468061214": "/books/musica.png",            // 1.PRI Cuad. Music ED22
 };
 
 export function bookCoverUrl(

@@ -59,7 +59,7 @@ export const uniformCatalog: SeedUniformItem[] = [
   // ===========================================================================
   {
     slug: "chandal",
-    name: "Chándal completo",
+    name: "Chándal",
     description: "Conjunto oficial de chándal: chaqueta con cremallera completa y pantalón a juego. Escudo del colegio bordado. Se vende como conjunto, no por piezas separadas.",
     section: "DEPORTE",
     gender: "UNISEX",
@@ -223,17 +223,6 @@ export const uniformCatalog: SeedUniformItem[] = [
     order: o(),
     variants: variants(sizesKids.concat(sizesAdult), ["12"], ["2", "XL"]),
   },
-  {
-    slug: "chaleco-acolchado",
-    name: "Chaleco acolchado",
-    description: "Chaleco verde acolchado para entretiempo. Cremallera completa.",
-    section: "ABRIGO",
-    gender: "UNISEX",
-    basePriceCents: 3290,
-    order: o(),
-    variants: variants(sizesKids.concat(sizesAdult), ["10"], []),
-  },
-
   // ===========================================================================
   //  Infantil
   // ===========================================================================

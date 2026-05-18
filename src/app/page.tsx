@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Shirt, ShieldCheck, Truck } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
@@ -190,36 +191,52 @@ function Feature({ icon, label }: { icon: React.ReactNode; label: string }) {
 function HeroStack() {
   return (
     <>
-      {/* Tarjeta libro principal */}
+      {/* Tarjeta libro principal — Lengua de 1º Primaria */}
       <div className="absolute top-0 right-0 w-64 card-elevated p-5 rotate-2 z-30">
-        <div className="aspect-[3/4] rounded-lg bg-gradient-to-br from-primary to-primary/70 mb-3 flex items-end p-4">
-          <div className="text-primary-foreground">
-            <div className="text-[10px] uppercase tracking-widest opacity-70">SANTILLANA</div>
-            <div className="font-serif text-lg leading-tight mt-1">Lengua Castellana</div>
-            <div className="text-xs opacity-70 mt-1">3º Primaria</div>
-          </div>
+        <div className="relative aspect-[3/4] rounded-lg bg-secondary/40 overflow-hidden mb-3">
+          <Image
+            src="/books/lengua.png"
+            alt="Lengua Castellana — 1º Primaria"
+            fill
+            sizes="256px"
+            className="object-contain p-2"
+          />
         </div>
-        <div className="text-sm font-semibold text-primary">35,00 €</div>
+        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">SANTILLANA</div>
+        <div className="font-serif text-base leading-tight mt-0.5 text-primary">Lengua Castellana</div>
+        <div className="text-xs text-muted-foreground">1º Primaria</div>
+        <div className="mt-2 text-sm font-semibold text-primary">35,00 €</div>
       </div>
-      {/* Tarjeta chándal */}
+      {/* Tarjeta chándal — conjunto completo */}
       <div className="absolute top-20 left-0 w-56 card-elevated p-5 -rotate-3 z-20">
-        <div className="aspect-square rounded-lg bg-gradient-to-br from-emerald-900 to-emerald-800 mb-3 flex items-center justify-center">
-          <Shirt className="h-16 w-16 text-emerald-300/70" strokeWidth={1} />
+        <div className="relative aspect-square rounded-lg bg-secondary/40 overflow-hidden mb-3">
+          <Image
+            src="/uniform/chandal.png"
+            alt="Chándal del colegio"
+            fill
+            sizes="224px"
+            className="object-contain p-3"
+          />
         </div>
         <div className="text-xs uppercase tracking-wider text-muted-foreground">Uniforme</div>
-        <div className="font-medium text-sm leading-tight">Chaqueta de chándal</div>
-        <div className="mt-1 text-sm font-semibold text-primary">34,90 €</div>
+        <div className="font-medium text-sm leading-tight">Chándal</div>
+        <div className="mt-1 text-sm font-semibold text-primary">58,90 €</div>
       </div>
-      {/* Tarjeta inglés (book) */}
+      {/* Tarjeta inglés — Amazing Journey 1 */}
       <div className="absolute bottom-12 right-10 w-56 card-elevated p-5 rotate-3 z-10">
-        <div className="aspect-[3/4] rounded-lg bg-gradient-to-br from-amber-700 to-amber-900 mb-3 flex items-end p-4">
-          <div className="text-amber-50">
-            <div className="text-[10px] uppercase tracking-widest opacity-70">PEARSON</div>
-            <div className="font-serif text-base leading-tight mt-1">Gold Experience B1</div>
-            <div className="text-xs opacity-70 mt-1">1º ESO</div>
-          </div>
+        <div className="relative aspect-[3/4] rounded-lg bg-secondary/40 overflow-hidden mb-3">
+          <Image
+            src="/books/student_book.png"
+            alt="Amazing Journey 1 — 1º Primaria"
+            fill
+            sizes="224px"
+            className="object-contain p-2"
+          />
         </div>
-        <div className="text-sm font-semibold text-primary">45,00 €</div>
+        <div className="text-[10px] uppercase tracking-widest text-muted-foreground">RICHMOND</div>
+        <div className="font-serif text-sm leading-tight mt-0.5 text-primary">Amazing Journey 1</div>
+        <div className="text-xs text-muted-foreground">1º Primaria · Inglés</div>
+        <div className="mt-2 text-sm font-semibold text-primary">45,00 €</div>
       </div>
     </>
   );
